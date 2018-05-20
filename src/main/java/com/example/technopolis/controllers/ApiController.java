@@ -1,46 +1,67 @@
 package com.example.technopolis.controllers;
 
+import com.example.technopolis.dto.SubjectDto;
 import com.example.technopolis.model.Subject;
+import com.example.technopolis.services.NewSubjectRepository;
+import com.example.technopolis.services.SubjectsRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.Collections;
 
 @RestController
-@RequestMapping("api/")
+@RequestMapping(
+    consumes = {MediaType.APPLICATION_JSON_VALUE},
+    produces = {MediaType.APPLICATION_JSON_VALUE}
+)
 public class ApiController {
 
-    @RequestMapping(value = "/subjects", method = RequestMethod.GET)
-    public List<Subject> getSubjectsr(){
-        ArrayList subjects = new ArrayList<Subject>(){{
-            add(new Subject(1, "Front-back"));
-            add(new Subject(2, "DB"));
-            add(new Subject(3, "Advanced java-2"));
-        }};
+    @Autowired
+    SubjectsRepository subjectsRepository;
 
-        return subjects;
+    @Autowired
+    NewSubjectRepository newSubjectsRepository;
 
+    @GetMapping("/subjects")
+    @ResponseBody
+    public ModelAndView getSubjects() {
+        return new ModelAndView("index1", Collections.singletonMap("subject", newSubjectsRepository.findAll()));
     }
 
-    @RequestMapping(value = "/subjects", method = RequestMethod.POST)
-    public List<Subject> updateSubjects(){
-       //TODO
-        return null;
-
+    @GetMapping("/signup")
+    public String signUp() {
+        return "signup";
     }
 
-    @RequestMapping(value = "/subjects", method = RequestMethod.DELETE)
-    public List<Subject> deleteSubjects(){
-        //TODO
-        return null;
+    //    @GetMapping("/")
+    //    public ModelAndView mainPage() {
+    //        //        repository.updateScore();
+    //        Map<String, String> model = new HashMap<>();
+    //        //        model.put("score", String.valueOf(repository.getScore().getScore()));
+    //        return new ModelAndView("index1", model);
+    //    }
 
+    @PutMapping("/subjects")
+    public long insertSubject(@RequestBody SubjectDto subjectDto) {
+        return subjectsRepository.insert(new Subject(subjectDto.getInputName()));
     }
 
+    @PostMapping("/subjects")
+    public void updateSubject(@RequestBody SubjectDto subjectDto) {
+        subjectsRepository.update(new Subject(subjectDto.getInputId(), subjectDto.getInputName()));
+    }
 
-
-
-
+    @DeleteMapping("/subjects")
+    public int deleteSubject(@RequestBody SubjectDto subjectDto) {
+        return subjectsRepository.delete(subjectDto.getInputId());
+    }
 }

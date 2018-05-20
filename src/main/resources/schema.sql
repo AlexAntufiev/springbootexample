@@ -1,6 +1,5 @@
-create table score
-(
-  id integer not null auto_increment,
-  score integer not null,
-  primary key(id)
-);
+-- create table subject
+-- (
+--   id   long auto_increment not null primary key,
+--   name varchar(255)        not null,
+-- );
