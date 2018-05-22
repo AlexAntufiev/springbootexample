@@ -1,5 +1,6 @@
 package com.example.technopolis;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
@@ -14,17 +15,18 @@ import org.springframework.web.servlet.view.JstlView;
  * @version 1.2.0
  * @since 1.2.0 19.05.2018
  */
-@Configuration
+//@Configuration
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
 
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setPrefix("templates/");
+        resolver.setPrefix("/templates/");
         resolver.setSuffix(".jsp");
         resolver.setViewClass(JstlView.class);
         registry.viewResolver(resolver);
+        //        registry.jsp("/templates/", ".jsp");
     }
 
     @Override

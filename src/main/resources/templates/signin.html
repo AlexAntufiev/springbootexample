@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SIGN IN</title>
+    <script type="text/javascript" src="webjars/jquery/2.1.4/jquery.min.js"></script>
+</head>
+<body>
+<div class="form-row">
+    <label for="form_email">Email: </label>
+    <input type="email" id="form_email" name="email">
+</div>
+<div class="form-row">
+    <label for="form_password">Password: </label>
+    <input type="password" id="form_password" name="password">
+</div>
+<div class="form-row">
+    <input type="submit" id="form_submit" value="Go">
+</div>
+<script>
+    $(document).ready(function () {
+        function validateEmail(email) {
+            let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
+        }
+
+        function validatePassword(password) {
+            return password.length > 10;
+        }
+
+        $('#form_email').on('change paste keyup', function () {
+            if (!validateEmail($(this).val())) {
+                $(this).css('border-color', 'red');
+            } else {
+                $(this).css('border-color', 'green');
+            }
+        });
+        $('#form_password').on('change paste keyup', function () {
+            if (!validatePassword($(this).val())) {
+                $(this).css('border-color', 'red');
+            } else {
+                $(this).css('border-color', 'green');
+            }
+        });
+        $('#form_submit').click(function () {
+            let email = $('#form_email').val();
+            let password = $('#form_password').val();
+            if (validateEmail(email) && validatePassword(password)) {
+                let json = {"email": email, "password": password};
+                $.ajax(
+                    {
+                        url: '/',
+                        method: 'POST',
+                        data: JSON.stringify(json),
+                        dataType: 'json',
+                        contentType: "application/json; charset=utf-8",
+                        statusCode: {
+                            200: function (data) {
+                                console.log(data);
+                                $(location).attr('href','/subjects');
+                            }
+                        }
+                    });
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 package com.example.technopolis.services;
 
-import com.example.technopolis.model.Subject;
+import com.example.technopolis.model.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,8 +9,7 @@ import org.springframework.stereotype.Repository;
  *
  * @author Aleksey Antufev
  * @version 1.2.0
- * @since 1.2.0 19.05.2018
+ * @since 1.2.0 21.05.2018
  */
 @Repository
-public interface NewSubjectRepository extends CrudRepository<Subject, Integer> {
-}
+public interface UserRepository extends CrudRepository<User, String> {}

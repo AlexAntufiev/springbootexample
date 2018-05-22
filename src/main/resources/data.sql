@@ -1,1 +1,0 @@
-insert into score (score) values(0);

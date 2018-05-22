@@ -1,5 +1,0 @@
--- create table subject
--- (
---   id   long auto_increment not null primary key,
---   name varchar(255)        not null,
--- );
