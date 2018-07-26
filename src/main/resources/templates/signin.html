@@ -3,19 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <title>SIGN IN</title>
+
+    <link rel="stylesheet" href="/css/default.css"/>
     <script type="text/javascript" src="webjars/jquery/2.1.4/jquery.min.js"></script>
 </head>
 <body>
-<div class="form-row">
-    <label for="form_email">Email: </label>
-    <input type="email" id="form_email" name="email">
-</div>
-<div class="form-row">
-    <label for="form_password">Password: </label>
-    <input type="password" id="form_password" name="password">
-</div>
-<div class="form-row">
-    <input type="submit" id="form_submit" value="Go">
+<div class="content">
+
+    <div class="signin-header">
+        <h1 class="signin-title">SIGN IN</h1>
+    </div>
+
+    <div class="signin-container">
+        <div id="list" class="signin-list">
+            <div class="signin-list_item">
+                <div class="email">Email</div>
+                <input class="signin-list_item-name" type="email" id="form_email" name="email">
+            </div>
+            <div class="signin-list_item">
+                <label for="form_password">Password: </label>
+                <input class="signin-list_item-name" type="password" id="form_password" name="password">
+            </div>
+            <div class="signin-list_item">
+                <input class="signin-list_item-name" type="submit" id="form_submit" value="Go">
+            </div>
+            <div class="signin-list_item">
+                <a id="signin-link-signup" href="signup.html">SIGN UP</a>
+            </div>
+        </div>
+    </div>
 </div>
 <script>
     $(document).ready(function () {
@@ -58,6 +74,9 @@
                             200: function (data) {
                                 console.log(data);
                                 $(location).attr('href','/subjects');
+                            },
+                            400: function () {
+                              alert("incorect data");
                             }
                         }
                     });

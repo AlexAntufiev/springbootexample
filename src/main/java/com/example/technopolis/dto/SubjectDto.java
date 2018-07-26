@@ -4,18 +4,22 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 /**
- * TODO: add doc
  *
  * @author Aleksey Antufev
- * @version 1.2.0
- * @since 1.2.0 19.05.2018
  */
 @Data
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SubjectDto {
 
-    Long inputId;
-    String inputName;
+    @NotNull
+    private Long inputId;
+
+    @NotNull
+    @Min(1)
+    private String inputName;
 }

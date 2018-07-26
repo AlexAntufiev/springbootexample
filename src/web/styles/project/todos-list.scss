@@ -1,9 +1,11 @@
 @import "../config/globals";
 
-.todos-list {
+.todos-list,
+.signin-list {
 }
 
-    .todos-list_item {
+    .todos-list_item,
+    .signin-list_item {
       border-bottom: 1px groove $color-border;
       min-height: $button_side;
       display: flex;
@@ -12,7 +14,8 @@
       @include clearfix();
     }
 
-      .todos-list_item:hover{
+      .todos-list_item:hover,
+      .signin-list_item:hover {
         background: $color-border;
       }
 
@@ -104,7 +107,9 @@
             opacity: 1;
           }
 
-        .todos-list_item_name {
+        .todos-list_item_name,
+        .email,
+        .signin-list_item-name{
           overflow: hidden;
           -webkit-box-flex: 1;
           flex: 1 0;

@@ -1,14 +1,18 @@
 @import "../config/globals";
 
 $common-todos-container-shadow: 0 2px 4px rgba(0, 0, 0, .2);
-.todos-container {
+.todos-container,
+.signin-container {
   background: $c-white;
   box-shadow: $common-todos-container-shadow;
   position: relative;
 }
 
 .todos-container:before,
-.todos-container:after {
+.signin-container:before,
+.todos-container:after,
+.signin-container:after
+{
   content: '';
   position: absolute;
   top: 100%;
@@ -17,13 +21,15 @@ $common-todos-container-shadow: 0 2px 4px rgba(0, 0, 0, .2);
   z-index: -1;
 }
 
-.todos-container:before {
+.todos-container:before,
+.signin-container:before {
   height: $offset_high_2x;
   left: $offset;
   right: $offset;
 }
 
-.todos-container:after {
+.todos-container:after,
+.signin-container:after {
   height: $offset_high;
   left: $offset_half;
   right: $offset_half;
