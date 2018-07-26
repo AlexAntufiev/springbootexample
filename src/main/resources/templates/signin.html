@@ -73,10 +73,10 @@
                         statusCode: {
                             200: function (data) {
                                 console.log(data);
-                                $(location).attr('href','/subjects');
+                                $(location).attr('href', '/subjects/data.id');
                             },
-                            400: function () {
-                              alert("incorect data");
+                            404: function () {
+                                alert("incorect data");
                             }
                         }
                     });

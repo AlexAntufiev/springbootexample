@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Objects;
+import javax.persistence.EntityNotFoundException;
 
 /**
  * @author Aleksey Antufev
@@ -28,7 +28,7 @@ public class AuthorizationController {
         return new ModelAndView("signup");
     }
 
-    @GetMapping("/signin")
+    @GetMapping
     public ModelAndView signIn() {
         return new ModelAndView("signin");
     }
@@ -39,8 +39,12 @@ public class AuthorizationController {
     }
 
     @PostMapping
-    public boolean login(@RequestBody User user) {
-        User checkUser = userRepository.findOne(user.getEmail());
-        return Objects.equals(user, checkUser);
+    public long login(@RequestBody User user) {
+        for (User findUser : userRepository.findAll()) {
+            if (findUser.accept(user)) {
+                return findUser.getId();
+            }
+        }
+        throw new EntityNotFoundException("User is not sign up");
     }
 }

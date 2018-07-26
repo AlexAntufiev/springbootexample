@@ -6,15 +6,11 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.Set;
 
 /**
  * @author Aleksey Antufev
@@ -37,7 +33,7 @@ public class User {
     @NotBlank
     private String password;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private Set<Subject> subjects;
+    public boolean accept(User user) {
+        return email.equals(user.email) & password.equals(user.password);
+    }
 }
