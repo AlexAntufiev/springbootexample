@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ForeignKey;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,9 +32,11 @@ public class Subject implements Serializable {
     private String name;
 
     @ManyToOne
+    @ForeignKey(name = "FK_USER")
     private User user;
 
-    public Subject(String name) {
+    public Subject(String name, long id) {
         this.name = name;
+        user.setId(id);
     }
 }
