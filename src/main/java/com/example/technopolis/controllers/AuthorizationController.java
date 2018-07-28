@@ -17,7 +17,7 @@ import javax.persistence.EntityNotFoundException;
  * @author Aleksey Antufev
  */
 @RestController
-@RequestMapping("/")
+@RequestMapping
 public class AuthorizationController {
 
     @Autowired
@@ -28,7 +28,7 @@ public class AuthorizationController {
         return new ModelAndView("signup");
     }
 
-    @GetMapping
+    @GetMapping("/signin")
     public ModelAndView signIn() {
         return new ModelAndView("signin");
     }

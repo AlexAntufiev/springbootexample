@@ -37,6 +37,6 @@ public class Subject implements Serializable {
 
     public Subject(String name, long id) {
         this.name = name;
-        user.setId(id);
+        user = new User(id);
     }
 }

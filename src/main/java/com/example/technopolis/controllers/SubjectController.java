@@ -10,40 +10,42 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("/subjects/{id}")
 public class SubjectController {
 
     @Autowired
     private SubjectRepository repository;
 
-    @GetMapping
-    public ModelAndView getSubjects(@PathVariable long id) {
+    @GetMapping("/subjects/{id}")
+    public ModelAndView getSubjects() {
+        return new ModelAndView("index");
+    }
+
+    @GetMapping("/subjects/{id}/getAll")
+    public Iterable<Subject> getAll(@PathVariable long id) {
         List<Subject> list = new ArrayList<>();
         for (Subject subject : repository.findAll()) {
             if (subject.getUser().getId() == id) {
                 list.add(subject);
             }
         }
-        return new ModelAndView("index", Collections.singletonMap("subjects", list));
+        return list;
     }
 
-    @PutMapping
+    @PutMapping("/subjects/{id}")
     public Subject insertSubject(@RequestBody SubjectDto subjectDto, @PathVariable long id) {
         return repository.save(new Subject(subjectDto.getInputName(), id));
     }
 
-    @PostMapping
+    @PostMapping("/subjects/{id}")
     public Subject updateSubject(@RequestBody SubjectDto subjectDto, @PathVariable long id) {
         for (Subject subject : repository.findAll()) {
             if (subject.getUser().getId() == id) {
@@ -56,12 +58,13 @@ public class SubjectController {
         throw new EntityNotFoundException();
     }
 
-    @DeleteMapping
+    @DeleteMapping("/subjects/{id}")
     public void deleteSubject(@RequestBody SubjectDto subjectDto, @PathVariable long id) {
         for (Subject subject : repository.findAll()) {
             if (subject.getUser().getId() == id) {
                 if (Objects.equals(subject.getId(), subjectDto.getInputId())) {
                     repository.delete(subjectDto.getInputId());
+                    return;
                 }
             }
         }

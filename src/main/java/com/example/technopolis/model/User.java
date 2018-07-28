@@ -33,7 +33,11 @@ public class User {
     @NotBlank
     private String password;
 
+    public User(long id) {
+        this.id = id;
+    }
+
     public boolean accept(User user) {
-        return email.equals(user.email) & password.equals(user.password);
+        return email.equals(user.email) && password.equals(user.password);
     }
 }

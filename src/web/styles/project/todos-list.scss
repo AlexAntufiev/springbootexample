@@ -1,11 +1,10 @@
 @import "../config/globals";
 
-.todos-list,
-.signin-list {
+.todos-list {
 }
 
     .todos-list_item,
-    .signin-list_item {
+    .sign-list_item{
       border-bottom: 1px groove $color-border;
       min-height: $button_side;
       display: flex;
@@ -14,8 +13,34 @@
       @include clearfix();
     }
 
-      .todos-list_item:hover,
-      .signin-list_item:hover {
+    .email,
+    .password,
+    .submit{
+      text-align: center;
+      line-height: $button_side;
+      padding: 0 $offset_low_4x 0 $offset_low_4x;
+      font-weight: $fw_normal;
+      font-size: 20px;
+      outline: none;
+    }
+
+    .submit,
+    .go-to{
+      width: 100%;
+      height: 64px;
+    }
+
+    .go-to{
+      text-decoration: none;
+      text-align: center;
+      height: 14px;
+      color:black;
+    }
+
+      .todos-list_item:hover {
+        .todos-list_item_name{
+          background: $color-border;
+        }
         background: $color-border;
       }
 
@@ -109,10 +134,11 @@
 
         .todos-list_item_name,
         .email,
-        .signin-list_item-name{
+        .password{
           overflow: hidden;
           -webkit-box-flex: 1;
           flex: 1 0;
           word-wrap: break-word;
           display: block;
+          border: 0;
         }

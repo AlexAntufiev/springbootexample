@@ -10,25 +10,23 @@
 <body>
 <div class="content">
 
-    <div class="signin-header">
-        <h1 class="signin-title">SIGN IN</h1>
+    <div class="sign-header">
+        <h1 class="sign-title">SIGN IN</h1>
     </div>
 
-    <div class="signin-container">
-        <div id="list" class="signin-list">
-            <div class="signin-list_item">
-                <div class="email">Email</div>
-                <input class="signin-list_item-name" type="email" id="form_email" name="email">
+    <div class="sign-container">
+        <div id="list" class="sign-list">
+            <div class="sign-list_item">
+                <input placeholder="email" class="email" type="email" id="form_email" name="email">
             </div>
-            <div class="signin-list_item">
-                <label for="form_password">Password: </label>
-                <input class="signin-list_item-name" type="password" id="form_password" name="password">
+            <div class="sign-list_item">
+                <input placeholder="password" class="password" type="password" id="form_password" name="password">
             </div>
-            <div class="signin-list_item">
-                <input class="signin-list_item-name" type="submit" id="form_submit" value="Go">
+            <div class="sign-list_item">
+                <input class="submit" type="submit" id="form_submit" value="SING IN">
             </div>
-            <div class="signin-list_item">
-                <a id="signin-link-signup" href="signup.html">SIGN UP</a>
+            <div class="sign-list_item">
+                <a class="go-to" href="signup.html">Go to SIGN UP</a>
             </div>
         </div>
     </div>
@@ -46,16 +44,16 @@
 
         $('#form_email').on('change paste keyup', function () {
             if (!validateEmail($(this).val())) {
-                $(this).css('border-color', 'red');
+                $(this).css('background', 'lightpink');
             } else {
-                $(this).css('border-color', 'green');
+                $(this).css('background', 'lightgreen');
             }
         });
         $('#form_password').on('change paste keyup', function () {
             if (!validatePassword($(this).val())) {
-                $(this).css('border-color', 'red');
+                $(this).css('background', 'lightpink');
             } else {
-                $(this).css('border-color', 'green');
+                $(this).css('background', 'lightgreen');
             }
         });
         $('#form_submit').click(function () {
@@ -70,15 +68,12 @@
                         data: JSON.stringify(json),
                         dataType: 'json',
                         contentType: "application/json; charset=utf-8",
-                        statusCode: {
-                            200: function (data) {
-                                console.log(data);
-                                $(location).attr('href', '/subjects/data.id');
-                            },
-                            404: function () {
-                                alert("incorect data");
-                            }
-                        }
+                    })
+                    .done(function (data) {
+                        $(location).attr('href', '/subjects/' + data);
+                    })
+                    .fail(function () {
+                        alert("Вы не зарегистрированы или неправильно ввели пароль");
                     });
             }
         });

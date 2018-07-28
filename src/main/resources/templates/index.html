@@ -6,7 +6,7 @@
     <title>todos</title>
 
     <link rel="stylesheet" href="/css/default.css"/>
-    <script type="text/javascript" src="webjars/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -28,6 +28,33 @@
         </div>
 
         <div id="list" class="todos-list">
+            <script>
+                $.ajax({
+                    url: location.href+'/getAll',
+                    method: 'GET',
+                    dataType: 'json',
+                    contentType: "application/json; charset=utf-8",
+                    statusCode: {
+                        200: function (data) {
+                            data.forEach(function (element) {
+                                $("#list").append(
+                                    '<div class="todos-list_item" id="' + element.id + '">\n' +
+                                    '     <div class="todos-list_item_checkbox todos-list_item_ready-mark">\n' +
+                                    '         <input type="checkbox" class="todos-list_item_checkbox_target"\n' +
+                                    '                           aria-label="Mark as (un)completed item"/>\n' +
+                                    '         <div class="todos-list_item_checkbox_visual"></div>\n' +
+                                    '         <div class="todos-list_item_checkbox_no_visual"></div>\n' +
+                                    '     </div>\n' +
+                                    '     <button class="todos-list_item_edit" aria-label="edit item"></button>\n' +
+                                    '     <button class="todos-list_item_remove" aria-label="remove item"></button>\n' +
+                                    '     <input class="todos-list_item_name" readonly value="' + element.name + '"/>\n' +
+                                    '</div>'
+                                );
+                            });
+                        }
+                    }
+                });
+            </script>
         </div>
 
         <div class="todos-actions-bar">
@@ -35,7 +62,6 @@
                 3 items left
             </div>
             <div class="todos-actions-bar_filters">
-                <!--align="center"-->
                 <button class="todos-actions-bar_filter __active" data-filter="all"
                         aria-label="show all items">
                     All
@@ -57,10 +83,9 @@
 </div>
 <script>
     $(document).ready(function () {
-
         const item_add = '#add_item';
         $(item_add).keydown(function (e) {
-            if (e.keyCode == 13) {
+            if (e.keyCode === 13) {
                 let name = $(item_add).val();
                 if (name.length > 0) {
                     let json = {"inputName": name};
@@ -68,7 +93,7 @@
                     console.log(json);
                     $.ajax(
                         {
-                            url: '/subjects',
+                            url: location.href,
                             method: 'PUT',
                             data: JSON.stringify(json),
                             dataType: 'json',
@@ -106,7 +131,7 @@
                 console.log(json);
                 $.ajax(
                     {
-                        url: '/subjects',
+                        url: location.href,
                         method: 'DELETE',
                         data: JSON.stringify(json),
                         dataType: 'json',
@@ -123,14 +148,14 @@
                 editItem.removeAttr('readonly');
                 editItem.focus().val('').val(editItem.attr('value'));
                 $(editItem).keydown(function (e) {
-                    if (e.keyCode == 13) {
+                    if (e.keyCode === 13) {
                         editItem.attr('readonly', '');
                         editItem.attr('value', editItem.val());
                         let json = {"inputId": id, "inputName": editItem.attr('value')};
                         console.log(json);
                         $.ajax(
                             {
-                                url: '/subjects',
+                                url: location.href,
                                 method: 'POST',
                                 data: JSON.stringify(json),
                                 dataType: 'json',

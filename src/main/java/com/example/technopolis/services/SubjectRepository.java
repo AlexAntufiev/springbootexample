@@ -8,5 +8,4 @@ import org.springframework.stereotype.Repository;
  * @author Aleksey Antufev
  */
 @Repository
-public interface SubjectRepository extends CrudRepository<Subject, Long> {
-}
+public interface SubjectRepository extends CrudRepository<Subject, Long> {}
