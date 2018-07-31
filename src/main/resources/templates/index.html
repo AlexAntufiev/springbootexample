@@ -6,7 +6,6 @@
     <title>todos</title>
 
     <link rel="stylesheet" href="/css/default.css"/>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -29,31 +28,28 @@
 
         <div id="list" class="todos-list">
             <script>
-                $.ajax({
-                    url: location.href+'/getAll',
-                    method: 'GET',
-                    dataType: 'json',
-                    contentType: "application/json; charset=utf-8",
-                    statusCode: {
-                        200: function (data) {
-                            data.forEach(function (element) {
-                                $("#list").append(
-                                    '<div class="todos-list_item" id="' + element.id + '">\n' +
-                                    '     <div class="todos-list_item_checkbox todos-list_item_ready-mark">\n' +
-                                    '         <input type="checkbox" class="todos-list_item_checkbox_target"\n' +
-                                    '                           aria-label="Mark as (un)completed item"/>\n' +
-                                    '         <div class="todos-list_item_checkbox_visual"></div>\n' +
-                                    '         <div class="todos-list_item_checkbox_no_visual"></div>\n' +
-                                    '     </div>\n' +
-                                    '     <button class="todos-list_item_edit" aria-label="edit item"></button>\n' +
-                                    '     <button class="todos-list_item_remove" aria-label="remove item"></button>\n' +
-                                    '     <input class="todos-list_item_name" readonly value="' + element.name + '"/>\n' +
-                                    '</div>'
-                                );
-                            });
-                        }
+                let xhr = new XMLHttpRequest();
+                xhr.open('GET', location.href + '/getAll', true);
+                xhr.setRequestHeader("Content-type", "application/json");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        let data = JSON.parse(xhr.responseText);
+                        data.forEach(function (element) {
+                            document.getElementById('list').innerHTML += '<div class="todos-list_item" id="' + element.id + '">\n' +
+                                '     <div class="todos-list_item_checkbox todos-list_item_ready-mark">\n' +
+                                '         <input type="checkbox" class="todos-list_item_checkbox_target"\n' +
+                                '                           aria-label="Mark as (un)completed item"/>\n' +
+                                '         <div class="todos-list_item_checkbox_visual"></div>\n' +
+                                '         <div class="todos-list_item_checkbox_no_visual"></div>\n' +
+                                '     </div>\n' +
+                                '     <button class="todos-list_item_edit" aria-label="edit item"></button>\n' +
+                                '     <button class="todos-list_item_remove" aria-label="remove item"></button>\n' +
+                                '     <input class="todos-list_item_name" readonly value="' + element.name + '"/>\n' +
+                                '</div>';
+                        });
                     }
-                });
+                };
+                xhr.send();
             </script>
         </div>
 
@@ -82,95 +78,77 @@
 
 </div>
 <script>
-    $(document).ready(function () {
-        const item_add = '#add_item';
-        $(item_add).keydown(function (e) {
-            if (e.keyCode === 13) {
-                let name = $(item_add).val();
-                if (name.length > 0) {
-                    let json = {"inputName": name};
-                    console.log(name);
-                    console.log(json);
-                    $.ajax(
-                        {
-                            url: location.href,
-                            method: 'PUT',
-                            data: JSON.stringify(json),
-                            dataType: 'json',
-                            contentType: "application/json; charset=utf-8",
-                            statusCode: {
-                                200: function (data) {
-                                    console.log(data);
-                                    $("#list").append(
-                                        '<div class="todos-list_item" id="' + data.id + '">\n' +
-                                        '     <div class="todos-list_item_checkbox todos-list_item_ready-mark">\n' +
-                                        '         <input type="checkbox" class="todos-list_item_checkbox_target"\n' +
-                                        '                           aria-label="Mark as (un)completed item"/>\n' +
-                                        '         <div class="todos-list_item_checkbox_visual"></div>\n' +
-                                        '         <div class="todos-list_item_checkbox_no_visual"></div>\n' +
-                                        '     </div>\n' +
-                                        '     <button class="todos-list_item_edit" aria-label="edit item"></button>\n' +
-                                        '     <button class="todos-list_item_remove" aria-label="remove item"></button>\n' +
-                                        '     <input class="todos-list_item_name" readonly value="' + name + '"/>\n' +
-                                        '</div>'
-                                    );
-                                    $(item_add).val('');
-                                }
-                            }
-                        });
-                }
-            }
-        });
+    document.addEventListener('DOMContentLoaded', function () {
+        const item_add = document.getElementById('add_item');
+        item_add.addEventListener('keydown', (function (e) {
+                if (e.keyCode === 13) {
+                    let name = item_add.value;
+                    if (name.length > 0) {
+                        let xhr = new XMLHttpRequest();
+                        xhr.open('PUT', location.href, true);
+                        xhr.setRequestHeader("Content-type", "application/json");
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState === 4 && xhr.status === 200) {
+                                let data = JSON.parse(xhr.responseText);
 
-        $(document).on('click', function (event) {
-            let target = event.target;
-            let parent = $(event.target).parent();
-            let id = parent.attr('id');
-            if (target.className === 'todos-list_item_remove') {
-                let json = {"inputId": id};
-                console.log(json);
-                $.ajax(
-                    {
-                        url: location.href,
-                        method: 'DELETE',
-                        data: JSON.stringify(json),
-                        dataType: 'json',
-                        contentType: "application/json; charset=utf-8",
-                        statusCode: {
-                            200: function () {
-                                parent.remove();
+                                document.getElementById('list').innerHTML +=
+                                    '<div class="todos-list_item" id="' + data.id + '">\n' +
+                                    '     <div class="todos-list_item_checkbox todos-list_item_ready-mark">\n' +
+                                    '         <input type="checkbox" class="todos-list_item_checkbox_target"\n' +
+                                    '                           aria-label="Mark as (un)completed item"/>\n' +
+                                    '         <div class="todos-list_item_checkbox_visual"></div>\n' +
+                                    '         <div class="todos-list_item_checkbox_no_visual"></div>\n' +
+                                    '     </div>\n' +
+                                    '     <button class="todos-list_item_edit" aria-label="edit item"></button>\n' +
+                                    '     <button class="todos-list_item_remove" aria-label="remove item"></button>\n' +
+                                    '     <input class="todos-list_item_name" readonly value="' + data.name + '"/>\n' +
+                                    '</div>';
+                                item_add.value = '';
                             }
-                        }
-                    });
+                        };
+                        xhr.send(JSON.stringify({"inputName": name}));
+                    }
+                }
+            })
+        );
+
+        document.getElementById('list').addEventListener('click', function (event) {
+            let target = event.target;
+            let parent = event.target.parentElement;
+            let id = parent.getAttribute('id');
+            if (target.className === 'todos-list_item_remove') {
+                let xhr = new XMLHttpRequest();
+                xhr.open('DELETE', location.href, true);
+                xhr.setRequestHeader("Content-type", "application/json");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        parent.remove();
+                    }
+                };
+                xhr.send(JSON.stringify({"inputId": id}));
             }
             if (target.className === 'todos-list_item_edit') {
-                let editItem = $(target).siblings('.todos-list_item_name');
-                editItem.removeAttr('readonly');
-                editItem.focus().val('').val(editItem.attr('value'));
-                $(editItem).keydown(function (e) {
+                let editItem = parent.getElementsByClassName('todos-list_item_name').item(0);
+                editItem.removeAttribute('readonly');
+                editItem.focus();
+                editItem.value = '';
+                editItem.value = editItem.getAttribute('value');
+                editItem.addEventListener('keydown', (function (e) {
                     if (e.keyCode === 13) {
-                        editItem.attr('readonly', '');
-                        editItem.attr('value', editItem.val());
-                        let json = {"inputId": id, "inputName": editItem.attr('value')};
-                        console.log(json);
-                        $.ajax(
-                            {
-                                url: location.href,
-                                method: 'POST',
-                                data: JSON.stringify(json),
-                                dataType: 'json',
-                                contentType: "application/json; charset=utf-8",
-                                statusCode: {
-                                    200: function (data) {
-                                        console.log(data)
-                                    }
-                                }
-                            });
+                        editItem.setAttribute('readonly', '');
+                        editItem.setAttribute('value', editItem.value);
+                        let xhr = new XMLHttpRequest();
+                        xhr.open('POST', location.href, true);
+                        xhr.setRequestHeader("Content-type", "application/json");
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState === 4 && xhr.status === 200) {
+                            }
+                        };
+                        xhr.send(JSON.stringify({"inputId": id, "inputName": editItem.getAttribute('value')}));
                     }
-                });
+                }));
             }
         });
-
     });
 </script>
 </body>
